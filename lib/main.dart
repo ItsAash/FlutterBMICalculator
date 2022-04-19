@@ -1,3 +1,4 @@
+import 'package:bmi/result.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -27,9 +28,10 @@ class BMI extends StatefulWidget {
 }
 
 class _BMIState extends State<BMI> {
-  double value = 0;
+  double height = 0;
   int weight = 50;
-  int age = 50;
+  int age = 18;
+  bool isMale = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class _BMIState extends State<BMI> {
           child: Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -56,59 +58,84 @@ class _BMIState extends State<BMI> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            height: 150,
-                            width: 180,
-                            color: const Color.fromRGBO(30, 31, 52, 1),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.male,
-                                  size: 80,
-                                  color: Colors.blue.shade300,
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isMale = true;
+                                });
+                              },
+                              child: Container(
+                                height: 130,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: isMale
+                                        ? Colors.indigo
+                                        : const Color.fromRGBO(30, 31, 52, 1),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.male,
+                                      size: 80,
+                                      color: Colors.blue.shade300,
+                                    ),
+                                    const Text(
+                                      "MALE",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
                                 ),
-                                const Text(
-                                  "MALE",
-                                  style: TextStyle(color: Colors.white),
+                              )),
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isMale = false;
+                                });
+                              },
+                              child: Container(
+                                height: 130,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: isMale
+                                        ? const Color.fromRGBO(30, 31, 52, 1)
+                                        : Colors.indigo,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.female,
+                                      size: 80,
+                                      color: Colors.pink.shade300,
+                                    ),
+                                    const Text(
+                                      "FEMALE",
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 150,
-                            width: 180,
-                            color: const Color.fromRGBO(30, 31, 52, 1),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.female,
-                                  size: 80,
-                                  color: Colors.pink.shade300,
-                                ),
-                                const Text(
-                                  "FEMALE",
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              ],
-                            ),
-                          )
+                              ))
                         ],
                       ),
                     ),
                     Container(
                       width: double.infinity,
                       height: 200,
-                      color: const Color(0xff1e1f34),
+                      decoration: const BoxDecoration(
+                          color: Color(0xff1e1f34),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Height",
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Colors.white54, fontSize: 18)),
                           RichText(
                             text: TextSpan(
-                                text: value.toStringAsFixed(2),
+                                text: height.toStringAsFixed(1),
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -117,10 +144,10 @@ class _BMIState extends State<BMI> {
                           Slider(
                               min: 0,
                               max: 200,
-                              value: value,
+                              value: height,
                               onChanged: (v) {
                                 setState(() {
-                                  value = v;
+                                  height = v;
                                 });
                               })
                         ],
@@ -130,19 +157,22 @@ class _BMIState extends State<BMI> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 180,
-                          height: 150,
-                          color: const Color(0xff1e1f34),
+                          width: 150,
+                          height: 130,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color(0xff1e1f34),
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text("Weight",
                                   style: TextStyle(
-                                      color: Colors.white54, fontSize: 24)),
-                              const Text("74",
-                                  style: TextStyle(
+                                      color: Colors.white54, fontSize: 18)),
+                              Text(weight.toString(),
+                                  style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 45,
+                                      fontSize: 40,
                                       fontWeight: FontWeight.bold)),
                               Row(
                                 mainAxisAlignment:
@@ -152,14 +182,22 @@ class _BMIState extends State<BMI> {
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        weight++;
+                                      });
+                                    },
                                     child: const Icon(Icons.add),
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        weight--;
+                                      });
+                                    },
                                     child: const Icon(Icons.remove),
                                   ),
                                 ],
@@ -168,21 +206,24 @@ class _BMIState extends State<BMI> {
                           ),
                         ),
                         Container(
-                          width: 180,
-                          height: 150,
-                          color: const Color(0xff1e1f34),
+                          width: 150,
+                          height: 130,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color(0xff1e1f34),
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text("Age",
                                   style: TextStyle(
-                                      color: Colors.white54, fontSize: 24)),
+                                      color: Colors.white54, fontSize: 18)),
                               RichText(
-                                  text: const TextSpan(
-                                      text: "18",
-                                      style: TextStyle(
+                                  text: TextSpan(
+                                      text: age.toString(),
+                                      style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 45,
+                                          fontSize: 40,
                                           fontWeight: FontWeight.bold))),
                               Row(
                                 mainAxisAlignment:
@@ -192,20 +233,55 @@ class _BMIState extends State<BMI> {
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        age++;
+                                      });
+                                    },
                                     child: const Icon(Icons.add),
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        age--;
+                                      });
+                                    },
                                     child: const Icon(Icons.remove),
                                   )
                                 ],
                               )
                             ],
                           ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            onPrimary: Colors.white,
+                            // primary: Colors.grey[300],
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Result(
+                                          isMale: isMale,
+                                          age: age,
+                                          height: height,
+                                          weight: weight,
+                                        )));
+                          },
+                          child: const Text('Calculate.'),
                         )
                       ],
                     )
