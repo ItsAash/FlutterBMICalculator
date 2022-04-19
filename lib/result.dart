@@ -93,17 +93,7 @@ class Result extends StatelessWidget {
                                         BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Result(
-                                                isMale: isMale,
-                                                age: age,
-                                                height: height,
-                                                weight: weight,
-                                              )));
-                                },
+                                onPressed: () {},
                                 child: const Text('Save Data'),
                               )
                             ],
